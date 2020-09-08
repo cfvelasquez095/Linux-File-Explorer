@@ -5,7 +5,7 @@ RenderWindow::RenderWindow()
     dpy = (XOpenDisplay(NIL));
     BLACKCOLOR = BlackPixel(dpy, DefaultScreen(dpy));
     WHITECOLOR = WhitePixel(dpy, DefaultScreen(dpy));
-    
+    SLATEGREYCOLOR = 3100495;    
 }
 
 bool RenderWindow::isOpen()
@@ -22,11 +22,15 @@ void RenderWindow::createWindow(int width, int height,std::string title)
         ButtonPressMask | ButtonReleaseMask  | StructureNotifyMask ); 
     XMapWindow(dpy, w);
     gc = XCreateGC(dpy, w, 0, NIL);
+    XSetWindowBackground(dpy, w, WHITECOLOR);
+    XSetBackground(dpy, gc, WHITECOLOR);
     XSetForeground(dpy, gc, BLACKCOLOR);
+
     XStoreName(dpy,w,title.c_str());
+    XMapRaised(dpy, w);
     XSetWMProtocols(dpy, w, &WM_DELETE_WINDOW, 1);
     //setting font:
-    const char * fontname = "12x24";
+    const char * fontname = "7x14";
     font = XLoadQueryFont(dpy,fontname);
     if (!font) {
         std::cout<<"unable to load font "<<fontname<<" using fixed\n"<<std::endl;
@@ -80,6 +84,19 @@ void RenderWindow::draw(Rect r)
     struct vector2 pos = r.getPosition();
     struct vector2 attr = r.getAttributes();
     XDrawRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
+}
+
+void RenderWindow::drawSidebar(Rect r)
+{
+    struct vector2 pos = r.getPosition();
+    struct vector2 attr = r.getAttributes();
+    XSetFillStyle(dpy, gc, FillSolid);
+    XSetForeground(dpy, gc, BLACKCOLOR);
+    XSetBackground(dpy, gc, BLACKCOLOR);
+    XDrawRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
+    XSetForeground(dpy, gc, SLATEGREYCOLOR);
+    XSetBackground(dpy, gc, BLACKCOLOR);
+    XFillRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
 }
 
 void RenderWindow::draw(TextView t)

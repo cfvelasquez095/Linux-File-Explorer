@@ -27,6 +27,7 @@ class RenderWindow
         bool isOpen();
         struct window_attr getAttributes();
         void draw(Rect r);
+        void drawSidebar(Rect r);
         void draw(TextView t);
         struct vector2 getPointerPos();
         Display *dpy;
@@ -35,10 +36,12 @@ class RenderWindow
 
         int BLACKCOLOR;
         int WHITECOLOR;
+        int SLATEGREYCOLOR;
 
     private:
         Window w;
         GC gc;
+        GC gc2;
         bool open;
         Atom WM_DELETE_WINDOW;
         XWindowAttributes window_attributes;
