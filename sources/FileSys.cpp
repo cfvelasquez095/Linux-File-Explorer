@@ -128,6 +128,7 @@ void FileSys::changePartition(std::string partitionName)
             break;
         parentPath += lista[i] + "/";
     }
+
     actualDir.parentPath = parentPath;
     entriesInDir = getAllInPath(actualDir.path);
     
