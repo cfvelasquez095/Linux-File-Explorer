@@ -35,7 +35,7 @@ class FileSys
         bool createFile(std::string nameFil);
         bool deleteFileFolder(std::string name);
         bool createLn(std::string name,bool isH);
-        bool copyFileFolder(std::string name, std::string copyName);
+        bool copyFileFolder(std::string oldPath, std::string newPath);
         bool moveFileFolder(std::string oldPath, std::string newPath);
         void updateActualDirEntries();
         void changeDir(std::string nameDir);

@@ -61,15 +61,15 @@ bool FileSys::deleteFileFolder(std::string name)
     return false;
 }
 
-bool FileSys::copyFileFolder(std::string name, std::string copyName)
+bool FileSys::copyFileFolder(std::string oldPath, std::string newPath)
 {
-    std::string createCommand = "cp '"+ actualDir.path+"/"+name+"' '"+ actualDir.path+"/"+copyName+"' ";
+    std::string createCommand = "cp '" + oldPath + "' '" + newPath + "' ";
     int status = system(createCommand.c_str());
     if(!status)
     {
         return true;
     }
-    createCommand = "cp -r '"+ actualDir.path+"/"+name+"' '"+ actualDir.path+"/"+copyName+"' ";
+    createCommand = "cp -r '" + oldPath + "' '" + newPath + "' ";
     status = system(createCommand.c_str());
     if(!status)
     {
@@ -128,6 +128,7 @@ void FileSys::changePartition(std::string partitionName)
             break;
         parentPath += lista[i] + "/";
     }
+
     actualDir.parentPath = parentPath;
     entriesInDir = getAllInPath(actualDir.path);
     
