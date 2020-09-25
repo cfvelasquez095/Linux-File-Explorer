@@ -6,54 +6,8 @@
 #include "../headers/FileSys.h"
 #include <vector>
 
-std::vector<TextView> getTextViewsFiles(std::vector<struct entry> files)
-{
-    std::vector<TextView> textos;
-    int m = 1;
-    int l = 1;
-    for(int i = 0; i < files.size(); i++) {
-        if(i > 12 && i < 36) {
-            textos.push_back(TextView(files[i].name,335,(m+1)*35));
-            m++;
-        }
-        else if(i > 35) {
-            textos.push_back(TextView(files[i].name,445,(l+1)*35));
-            l++;
-        }
-        else {
-            textos.push_back(TextView(files[i].name,225,(i+2)*35));
-        }
-    }
-    return textos;
-}
-
-
-std::vector<TextView> createTextViewsPartitions(std::vector<struct Mount> partitions)
-{
-    std::vector<TextView> textos;
-    for(int i = 0; i < partitions.size(); i++) {
-        textos.push_back(TextView(partitions[i].destination,20,(i+2)*35));
-    }
-
-    return textos;
-}
-
-std::string getEntryFocused(std::vector<TextView> entries)
-{
-    for(int i = 0; i < entries.size(); i++) {
-        if(entries[i].isFocused())
-            return entries[i].getText();
-    }
-
-    return "";
-}
-
 int main()
 {
-    FileSys f = FileSys();
-    std::vector<TextView> partitionsNames = createTextViewsPartitions(f.partitions);
-    std::vector<TextView> filesInPath = getTextViewsFiles(f.entriesInDir);
-
     RenderWindow x;
     TextEdit fName = TextEdit(10,535,180);
     TextView createFolderBtn = TextView("Create Directory",230,555);
@@ -307,7 +261,7 @@ int main()
         }
         
         foundClicked = false;
-
+      
         x.clear(x.WHITECOLOR);
         x.drawNavbar(Rect(0,0,900,35));
         x.drawSidebar(Rect(0,36,190,489));
@@ -323,17 +277,7 @@ int main()
         x.drawNavbuttons(movMsg);
         x.draw(mvBtn);
         x.draw(lnHBtn);
-        x.draw(lnSBtn);
-
-        for(int i = 0; i < partitionsNames.size(); i++) {
-            x.drawPartitions(partitionsNames[i]);
-        }
-
-        for(int i = 0; i < filesInPath.size(); i++) {
-            if(filesInPath[i].isFocused())
-                x.draw(filesInPath[i].sayFocused);
-            x.draw(filesInPath[i]);
-        }
+        x.draw(lnSBtn);  
     }
 
     return 0;

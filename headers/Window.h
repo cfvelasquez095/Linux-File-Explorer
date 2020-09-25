@@ -32,8 +32,6 @@ class RenderWindow
         void drawNavbar(Rect r);
         void draw(TextEdit t);
         void draw(TextView t);
-        void drawNavbuttons(TextView t);
-        void drawPartitions(TextView t);
         struct vector2 getPointerPos();
         Display *dpy;
 
