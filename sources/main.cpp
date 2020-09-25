@@ -168,35 +168,6 @@ int main()
                             }   
                         }
                         foundClicked = true;
-                        // std::string nameEntry = getEntryFocused(filesInPath);
-                        // if(nameEntry.length() > 0)
-                        // {
-                        //     if(fName.getText().length() < 1)
-                        //     {
-                        //         statusMsg.setText("Name for copy is required");
-                        //     }
-                        //     else
-                        //     {
-                        //         if(f.copyFileFolder(nameEntry,fName.getText()))
-                        //         {
-                        //             statusMsg.setText("File/Dir Copied");
-                        //             fName.setText("");
-                        //             f.updateActualDirEntries();
-                        //             filesInPath = getTextViewsFiles(f.entriesInDir);
-                        //         }
-                        //         else
-                        //         {
-                        //             statusMsg.setText("Unable to copy File/Dir");
-                        //         }
-                                
-                        //     }
-                            
-                        // }
-                        // else
-                        // {
-                        //     statusMsg.setText("No File/Dir has been selected");
-                        // }
-                        // foundClicked = true;   
                     } else if(deleteBtn.isClicked(pos.x,pos.y))
                     {
                         std::string nameEntry = getEntryFocused(filesInPath);
@@ -251,6 +222,49 @@ int main()
                             {
                                 statusMsg.setText("No File/Dir selected");
                             }   
+                        }
+                        foundClicked = true;
+                    } else if(lnSBtn.isClicked(pos.x,pos.y))
+                    {
+                        std::string nameEntry = getEntryFocused(filesInPath);
+                        if(nameEntry.length() > 0)
+                        {
+                            if(f.createLn(nameEntry,false))
+                            {
+                                statusMsg.setText("Link created");
+                                f.updateActualDirEntries();
+                                filesInPath = getTextViewsFiles(f.entriesInDir);
+                            }
+                            else
+                            {
+                                statusMsg.setText("Unable to create link");
+                            }
+                        }
+                        else
+                        {
+                            statusMsg.setText("No File/Dir selected");
+                        }
+                        foundClicked = true;
+                    }
+                    else if(lnHBtn.isClicked(pos.x,pos.y))
+                    {
+                        std::string nameEntry = getEntryFocused(filesInPath);
+                        if(nameEntry.length() > 0)
+                        {
+                            if(f.createLn(nameEntry,true))
+                            {
+                                statusMsg.setText("Hard link created");
+                                f.updateActualDirEntries();
+                                filesInPath = getTextViewsFiles(f.entriesInDir);
+                            }
+                            else
+                            {
+                                statusMsg.setText("Unable to create hard link");
+                            }
+                        }
+                        else
+                        {
+                            statusMsg.setText("No File/Dir selected");
                         }
                         foundClicked = true;
                     } else if(returnBtn.isClicked(pos.x,pos.y))
