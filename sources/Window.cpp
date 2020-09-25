@@ -83,7 +83,20 @@ void RenderWindow::draw(Rect r)
 {
     struct vector2 pos = r.getPosition();
     struct vector2 attr = r.getAttributes();
+    XSetForeground(dpy, gc, BLACKCOLOR);
     XDrawRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
+}
+
+void RenderWindow::drawNavbar(Rect r)
+{
+    struct vector2 pos = r.getPosition();
+    struct vector2 attr = r.getAttributes();
+    XSetFillStyle(dpy, gc, FillSolid);
+    XSetForeground(dpy, gc, BLACKCOLOR);
+    XDrawRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
+    XSetForeground(dpy, gc, 11674146);
+    XSetBackground(dpy, gc, BLACKCOLOR);
+    XFillRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
 }
 
 void RenderWindow::drawSidebar(Rect r)
@@ -92,9 +105,8 @@ void RenderWindow::drawSidebar(Rect r)
     struct vector2 attr = r.getAttributes();
     XSetFillStyle(dpy, gc, FillSolid);
     XSetForeground(dpy, gc, BLACKCOLOR);
-    XSetBackground(dpy, gc, BLACKCOLOR);
     XDrawRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
-    XSetForeground(dpy, gc, SLATEGREYCOLOR);
+    XSetForeground(dpy, gc, 8388608);
     XSetBackground(dpy, gc, BLACKCOLOR);
     XFillRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
 }
@@ -108,6 +120,35 @@ void RenderWindow::draw(TextView t)
 
     struct vector2 pos = t.getPosition();
     std::string texto = t.getText();
+    XSetForeground(dpy,gc, BLACKCOLOR);
+    XTextExtents(font,texto.c_str(),texto.length(),&direction,&ascent,&descent,&overall);
+    XDrawString(dpy,w,gc,pos.x,pos.y,texto.c_str(),texto.length());
+}
+
+void RenderWindow::drawNavbuttons(TextView t)
+{
+    int direction;
+    int ascent;
+    int descent;
+    XCharStruct overall;
+
+    struct vector2 pos = t.getPosition();
+    std::string texto = t.getText();
+    XSetForeground(dpy,gc, WHITECOLOR);
+    XTextExtents(font,texto.c_str(),texto.length(),&direction,&ascent,&descent,&overall);
+    XDrawString(dpy,w,gc,pos.x,pos.y,texto.c_str(),texto.length());
+}
+
+void RenderWindow::drawPartitions(TextView t)
+{
+    int direction;
+    int ascent;
+    int descent;
+    XCharStruct overall;
+
+    struct vector2 pos = t.getPosition();
+    std::string texto = t.getText();
+    XSetForeground(dpy,gc, WHITECOLOR);
     XTextExtents(font,texto.c_str(),texto.length(),&direction,&ascent,&descent,&overall);
     XDrawString(dpy,w,gc,pos.x,pos.y,texto.c_str(),texto.length());
 }

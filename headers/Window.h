@@ -28,7 +28,10 @@ class RenderWindow
         struct window_attr getAttributes();
         void draw(Rect r);
         void drawSidebar(Rect r);
+        void drawNavbar(Rect r);
         void draw(TextView t);
+        void drawNavbuttons(TextView t);
+        void drawPartitions(TextView t);
         struct vector2 getPointerPos();
         Display *dpy;
 
