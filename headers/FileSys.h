@@ -7,7 +7,6 @@
 #include <fstream>
 #include <dirent.h>
 #include <stdio.h>
-#include "Utilities.h"
 #include <thread>
 
 struct Mount {
@@ -38,11 +37,7 @@ class FileSys
         bool copyFileFolder(std::string name, std::string copyName);
         bool moveFileFolder(std::string oldPath, std::string newPath);
         void updateActualDirEntries();
-        void changeDir(std::string nameDir);
-        void changePartition(std::string partitionName);
-        std::vector<struct Mount> partitions;
         struct entry actualDir;
-        struct entry getEntryByName(std::string name);
         std::vector<struct entry> entriesInDir;
 
     private:
