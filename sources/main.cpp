@@ -19,11 +19,13 @@ int main()
     TextView lnSBtn = TextView("Create Soft Link",740,555);
     TextView returnBtn = TextView("<-Back",15,23);
     TextView forwardBtn = TextView("Forward->",75,23);
-    TextView statusMsg = TextView("",300,23);
+    TextView movMsg = TextView("",360,23);
+    TextView statusMsg = TextView("",400,23);
 
-    bool foundClicked = false;// esta variable me dice si ya encontro lo que fue clickeado
-    bool usingMove = false;//booleano para saber cuando di click al mvBtn
-    struct entry entryMove;// esta variable es la que uso para guardar la data del entry a mover.
+    bool foundClicked = false;
+    bool usingCopy = false;
+    bool usingMove = false;
+    struct entry entryMove;
 
     x.createWindow(900,600,"Linux File Explorer");
     
@@ -86,6 +88,125 @@ int main()
                         }
                         
                         foundClicked = true;
+                    } else if(copyBtn.isClicked(pos.x,pos.y))
+                    {
+                        if(usingCopy)
+                        {
+                            if(f.copyFileFolder(entryMove.path+"/"+entryMove.name,f.actualDir.path+"/"+"copy of "+entryMove.name))
+                            {
+                                statusMsg.setText("Copied File/Dir");
+                                f.updateActualDirEntries();
+                                filesInPath = getTextViewsFiles(f.entriesInDir);
+                            }
+                            else
+                            {
+                                statusMsg.setText("Unable to copy File/Dir");
+                            }
+                            copyBtn.setText("Copy File/Dir");
+                            movMsg.setText("");
+                            usingCopy = false;
+                        }
+                        else
+                        {
+                            std::string nameEntry = getEntryFocused(filesInPath);
+                            if(nameEntry.length() > 0)
+                            {
+                                usingCopy = true;
+                                entryMove = f.getEntryByName(nameEntry);
+                                copyBtn.setText("Paste File/Dir here");
+                                movMsg.setText("cp: "+nameEntry);
+                            }
+                            else
+                            {
+                                statusMsg.setText("No File/Dir selected");
+                            }   
+                        }
+                        foundClicked = true;
+                        // std::string nameEntry = getEntryFocused(filesInPath);
+                        // if(nameEntry.length() > 0)
+                        // {
+                        //     if(fName.getText().length() < 1)
+                        //     {
+                        //         statusMsg.setText("Name for copy is required");
+                        //     }
+                        //     else
+                        //     {
+                        //         if(f.copyFileFolder(nameEntry,fName.getText()))
+                        //         {
+                        //             statusMsg.setText("File/Dir Copied");
+                        //             fName.setText("");
+                        //             f.updateActualDirEntries();
+                        //             filesInPath = getTextViewsFiles(f.entriesInDir);
+                        //         }
+                        //         else
+                        //         {
+                        //             statusMsg.setText("Unable to copy File/Dir");
+                        //         }
+                                
+                        //     }
+                            
+                        // }
+                        // else
+                        // {
+                        //     statusMsg.setText("No File/Dir has been selected");
+                        // }
+                        // foundClicked = true;   
+                    } else if(deleteBtn.isClicked(pos.x,pos.y))
+                    {
+                        std::string nameEntry = getEntryFocused(filesInPath);
+                        if(nameEntry.length() > 0)
+                        {
+                            if(f.deleteFileFolder(nameEntry))
+                            {
+                                statusMsg.setText("Deleted File/Dir");
+                                f.updateActualDirEntries();
+                                filesInPath = getTextViewsFiles(f.entriesInDir);
+                            }
+                            else
+                            {
+                                statusMsg.setText("Unable to delete File/Dir");
+                            }
+                        }
+                        else
+                        {
+                            statusMsg.setText("No File/Dir has been selected");
+                        }
+                        foundClicked = true;
+                    } else if(mvBtn.isClicked(pos.x,pos.y))
+                    {
+                        if(usingMove)
+                        {
+                            if(f.moveFileFolder(entryMove.path+"/"+entryMove.name,f.actualDir.path+"/"+entryMove.name))
+                            {
+                                statusMsg.setText("Moved File/Dir");
+                                f.updateActualDirEntries();
+                                filesInPath = getTextViewsFiles(f.entriesInDir);
+                            }
+                            else
+                            {
+                                statusMsg.setText("Unable to move File/Dir");
+                            }
+                            mvBtn.setText("Move File/Dir");
+                            movMsg.setText("");
+                            usingMove = false;
+                        }
+                        else
+                        {
+                            std::string nameEntry = getEntryFocused(filesInPath);
+                            if(nameEntry.length() > 0)
+                            {
+                                usingMove = true;
+                                entryMove = f.getEntryByName(nameEntry);
+                                std::cout<<entryMove.path<<std::endl;
+                                mvBtn.setText("Move File/Dir here");
+                                movMsg.setText("mv: "+nameEntry);
+                            }
+                            else
+                            {
+                                statusMsg.setText("No File/Dir selected");
+                            }   
+                        }
+                        foundClicked = true;
                     } else if(returnBtn.isClicked(pos.x,pos.y))
                     {
                         if(f.actualDir.name == "/")
@@ -140,7 +261,7 @@ int main()
         }
         
         foundClicked = false;
-
+      
         x.clear(x.WHITECOLOR);
         x.drawNavbar(Rect(0,0,900,35));
         x.drawSidebar(Rect(0,36,190,489));
@@ -153,6 +274,7 @@ int main()
         x.drawNavbuttons(returnBtn);
         x.drawNavbuttons(forwardBtn);
         x.drawNavbuttons(statusMsg);
+        x.drawNavbuttons(movMsg);
         x.draw(mvBtn);
         x.draw(lnHBtn);
         x.draw(lnSBtn);  
