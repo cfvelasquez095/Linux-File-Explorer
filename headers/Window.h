@@ -6,6 +6,7 @@
 #include <unistd.h>   // So we got the profile for 10 seconds
 #include "../headers/Rect.h"
 #include "../headers/TextView.h"
+#include "../headers/TextEdit.h"
 
 #define NIL (0)
 
@@ -28,6 +29,8 @@ class RenderWindow
         struct window_attr getAttributes();
         void draw(Rect r);
         void drawSidebar(Rect r);
+        void drawNavbar(Rect r);
+        void draw(TextEdit t);
         void draw(TextView t);
         struct vector2 getPointerPos();
         Display *dpy;

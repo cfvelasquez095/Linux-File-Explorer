@@ -99,6 +99,27 @@ void RenderWindow::drawSidebar(Rect r)
     XFillRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
 }
 
+void RenderWindow::draw(TextEdit t)
+{
+    if(t.focused)
+        draw(t.sayFocused);
+    
+    int direction;
+    int ascent;
+    int descent;
+    XCharStruct overall;
+    struct vector2 pos = t.textBox.getPosition();
+    struct vector2 attr = t.textBox.getAttributes();
+
+    XSetBackground(dpy, gc, WHITECOLOR);
+    XSetForeground(dpy, gc, BLACKCOLOR);
+
+    XDrawRectangle(dpy, w, gc, pos.x, pos.y, attr.x, attr.y);
+    std::string texto = t.getText();
+    XTextExtents(font,texto.c_str(),texto.length(),&direction,&ascent,&descent,&overall);
+    XDrawString(dpy,w,gc,pos.x +5,pos.y + attr.y - 10,texto.c_str(),texto.length());
+}
+
 void RenderWindow::draw(TextView t)
 {
     int direction;

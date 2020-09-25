@@ -95,6 +95,50 @@ bool FileSys::moveFileFolder(std::string oldPath, std::string newPath)
     return false;
 }
 
+struct entry FileSys::getEntryByName(std::string name)
+{
+    struct entry x;
+    for(int i = 0; i < entriesInDir.size(); i++)
+    {
+        if(entriesInDir[i].name == name)
+            return entriesInDir[i];
+    }
+    return x;
+    
+}
+
+void FileSys::changePartition(std::string partitionName)
+{   
+    std::vector<std::string> lista = Utilities::split(partitionName,'/');
+    actualDir.name = lista[lista.size()-1];
+    actualDir.path = partitionName;
+    std::string parentPath = "";
+    for(int i = 0; i < lista.size(); i++)
+    {
+        if(i == (lista.size()-1))
+            break;
+        parentPath += lista[i] + "/";
+    }
+
+    actualDir.parentPath = parentPath;
+    entriesInDir = getAllInPath(actualDir.path);
+    
+}
+
+std::vector<struct Mount> FileSys::getPartitionsName()
+{
+   std::ifstream mountInfo("/proc/mounts");
+    std::vector<struct Mount> data;
+    while( !mountInfo.eof() ) {
+        Mount each;
+        mountInfo >> each.device >> each.destination >> each.fstype >> each.options >> each.dump >> each.pass;
+        if( each.device != "" && each.device.substr(0,4) == "/dev" )
+            data.push_back(each);
+    }
+    mountInfo.close();
+    return data; 
+}
+
 std::vector<struct entry> FileSys::getAllInPath(std::string path)
 {
     DIR *dirp;
