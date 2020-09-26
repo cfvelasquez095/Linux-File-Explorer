@@ -5,6 +5,7 @@ FileSys::FileSys()
     actualDir.name = "/";
     actualDir.parentPath = "";
     actualDir.path = "/";
+    partitions = getPartitionsName();
     entriesInDir = getAllInPath(actualDir.path);
 }
 
@@ -38,6 +39,14 @@ void FileSys::openFile(int posInVectorFiles)
 
 void FileSys::updateActualDirEntries()
 {
+    entriesInDir = getAllInPath(actualDir.path);
+}
+
+void FileSys::changeDir(std::string nameDir)
+{
+    actualDir.name = nameDir;
+    actualDir.parentPath = actualDir.path;
+    actualDir.path = actualDir.parentPath + "/" + actualDir.name;
     entriesInDir = getAllInPath(actualDir.path);
 }
 
